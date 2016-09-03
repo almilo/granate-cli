@@ -1,0 +1,57 @@
+{
+  "name": "granate-cli",
+  "description": "CLI for granate container",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "typings": "typings install",
+    "compile": "tsc",
+    "test": "npm run typings && npm run compile && npm run test:only",
+    "test:only": "mocha 'dist/**/*.spec.js' -r dist/support.spec.js",
+    "coverage": "istanbul cover _mocha 'dist/**/*.spec.js' -r dist/support.spec.js -x '**/*.spec.js'",
+    "postcoverage": "remap-istanbul --input coverage/coverage.json --type lcovonly --output coverage/lcov.info && istanbul check-coverage --statements 95 --branches 95",
+    "dev": "npm run compile -- --watch | npm test -- --watch",
+    "build": "rimraf dist && npm test",
+    "prepublish": "npm build",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "author": "Alberto Mijares <almilo@almilo.es>",
+  "license": "MIT",
+  "keywords": [
+    "granate",
+    "CLI",
+    "GraphQL",
+    "annotations",
+    "directives"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/almilo/granate-cli"
+  },
+  "dependencies": {
+    "granate": "^1.0.0",
+    "graphql": "^0.7.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "ghooks": "^1.3.2",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2",
+    "remap-istanbul": "^0.6.4",
+    "rimraf": "^2.5.4",
+    "semantic-release": "^4.3.5",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.3",
+    "validate-commit-msg": "^2.8.0"
+  },
+  "typings": "dist/index.d.ts",
+  "config": {
+    "ghooks": {
+      "commit-msg": "validate-commit-msg",
+      "pre-push": "npm test"
+    }
+  }
+}
