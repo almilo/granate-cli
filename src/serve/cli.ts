@@ -22,7 +22,7 @@ export default function (yargs: Yargs): Yargs {
                     alias: 'g',
                     type: 'boolean',
                     'default': true,
-                    describe: 'do not deploy GraphiQL'
+                    describe: 'deploy GraphiQL'
                 }
             },
             (argv: Argv) => serve(
