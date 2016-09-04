@@ -11,9 +11,10 @@
   "scripts": {
     "typings": "typings install",
     "compile": "tsc",
-    "test": "npm run typings && npm run compile && npm run test:only",
+    "test": "npm run typings && npm run compile && npm run test:ci",
     "test:only": "mocha 'dist/**/*.spec.js' -r dist/support.spec.js",
-    "dev": "npm run compile -- --watch | npm test -- --watch",
+    "test:ci": "npm run test:only -- --grep @slow --invert",
+    "dev": "npm run compile -- --watch | npm run test:only -- --watch",
     "build": "rimraf dist && npm test",
     "prepublish": "npm build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
@@ -53,7 +54,7 @@
   "config": {
     "ghooks": {
       "commit-msg": "validate-commit-msg",
-      "pre-push": "npm test"
+      "pre-push": "npm run test:only"
     }
   }
 }
