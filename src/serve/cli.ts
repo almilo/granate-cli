@@ -1,5 +1,4 @@
 import { Yargs, Argv } from 'yargs';
-import { readTextFile } from '../lib/index';
 import serve from './index';
 
 export default function (yargs: Yargs): Yargs {
@@ -23,13 +22,25 @@ export default function (yargs: Yargs): Yargs {
                     type: 'boolean',
                     'default': true,
                     describe: 'deploy GraphiQL'
+                },
+                'root': {
+                    alias: 'r',
+                    type: 'string',
+                    describe: 'JS module to use as root value'
+                },
+                'context': {
+                    alias: 'c',
+                    type: 'string',
+                    describe: 'JS module to use as context value'
                 }
             },
             (argv: Argv) => serve(
-                readTextFile(argv['schema-file']),
+                argv['schema-file'],
                 argv['port'],
                 {
-                    graphiql: argv['graphiql']
+                    graphiql: argv['graphiql'],
+                    rootValue: argv['root'],
+                    contextValue: argv['context']
                 }
             )
         );

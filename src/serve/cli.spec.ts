@@ -45,10 +45,28 @@ describe('serve command', function () {
         });
     });
 
-    it('should start a server and not deploy GraphiQL when the --graphiql option is false @slow', function () {
-        return execWithArguments('serve test/schema.graphql --g false').then(({stdout}) => {
+    it('should start a server and not deploy GraphiQL when the -g option is false @slow', function () {
+        return execWithArguments('serve test/schema.graphql -g false').then(({stdout}) => {
             stdout.should.contain(`port: '4000'`);
             stdout.should.contain('GraphiQL');
         });
+    });
+
+    it('should start a server and use root value and context when --root and --context options are used @slow', function () {
+        return execWithArguments('serve test/schema.graphql --root test/root-value.js --context test/context-value.js')
+            .then(({stdout}) => {
+                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain(`Using: 'test/root-value.js' as root value.`);
+                stdout.should.contain(`Using: 'test/context-value.js' as context value.`);
+            });
+    });
+
+    it('should start a server and use root value and context when -r and -c options are used @slow', function () {
+        return execWithArguments('serve test/schema.graphql -r test/root-value.js -c test/context-value.js')
+            .then(({stdout}) => {
+                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain(`Using: 'test/root-value.js' as root value.`);
+                stdout.should.contain(`Using: 'test/context-value.js' as context value.`);
+            });
     });
 });

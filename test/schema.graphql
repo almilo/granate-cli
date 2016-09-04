@@ -1,8 +1,9 @@
-type Foo {
+type Todo {
     id: ID
-    name: String
+    title: String
+    completed: Boolean
 }
 
 type Query {
-    foos: [Foo]
+    todos: [Todo]
 }
