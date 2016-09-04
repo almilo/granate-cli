@@ -5,6 +5,9 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "granate": "dist/index.js"
+  },
   "scripts": {
     "typings": "typings install",
     "compile": "tsc",
@@ -29,8 +32,11 @@
     "url": "https://github.com/almilo/granate-cli"
   },
   "dependencies": {
+    "express": "^4.14.0",
+    "express-graphql": "^0.5.4",
     "granate": "^1.0.0",
-    "graphql": "^0.7.0"
+    "graphql": "^0.7.0",
+    "yargs": "^5.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

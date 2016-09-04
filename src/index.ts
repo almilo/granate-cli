@@ -1,7 +1,15 @@
-import { invariant } from './lib';
+#!/usr/bin/env node
 
-export default function (value: string): string {
-    invariant(value === 'foo', 'Must provide foo.');
+import * as yargs from 'yargs';
+import serve from './serve/cli';
 
-    return 'bar';
+yargs
+    .usage('Usage: $0 <command> [options]')
+    .strict()
+    .help();
+
+serve(yargs);
+
+if (yargs.argv._.length === 0) {
+    yargs.showHelp();
 }

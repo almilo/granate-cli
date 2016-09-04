@@ -1,5 +1,5 @@
-export function invariant(value: any, message: string) {
-    if (!value) {
-        throw new Error(message);
-    }
+import * as fs from 'fs';
+
+export function readTextFile(absoluteFilePath: string) {
+    return fs.readFileSync(absoluteFilePath, 'utf-8');
 }
