@@ -12,10 +12,10 @@ line.
 ## Commands
 
 ### serve
-Starts an HTTP GraphQL server with the given schema.
+Starts an HTTP GraphQL server with the given schema file.
 
 ```
-> granate serve schema.graphql --port 4000 --graphiql true
+> granate serve schema.graphql --port 4000 --graphiql true --root root-value.js --context context-value.js
 ```
 
 ```
