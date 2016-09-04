@@ -22,9 +22,11 @@ Starts an HTTP GraphQL server with the given schema.
 granate serve [schema-file]
 
 Options:
+  --help          Show help                                            [boolean]
   --port, -p      the server port                       [number] [default: 4000]
-  --graphiql, -g  deploy GraphiQL               [boolean] [default: true]
-
+  --graphiql, -g  deploy GraphiQL                      [boolean] [default: true]
+  --root, -r      JS module to use as root value                        [string]
+  --context, -c   JS module to use as context value                     [string]
 ```
 
 ## Usage
