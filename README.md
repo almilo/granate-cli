@@ -2,7 +2,6 @@
 
 [![npm version](https://badge.fury.io/js/granate-cli.svg)](https://badge.fury.io/js/granate-cli)
 [![Build Status](https://travis-ci.org/almilo/granate-cli.svg?branch=master)](https://travis-ci.org/almilo/granate-cli)
-[![Coverage Status](https://coveralls.io/repos/github/almilo/granate-cli/badge.svg)](https://coveralls.io/github/almilo/granate-cli)
 
 CLI for [granate](https://github.com/almilo/granate)
 
