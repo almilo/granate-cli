@@ -41,8 +41,8 @@ export default function (yargs: Yargs): Yargs {
             },
             (argv: Argv) => serve(
                 argv['schema-file'],
-                argv['port'],
                 {
+                    port: argv['port'],
                     graphiql: argv['graphiql'],
                     rootValue: argv['root'],
                     contextValue: argv['context'],

@@ -4,13 +4,14 @@ import { buildSchema } from 'granate';
 import { readTextFile, requireRelative } from '../lib/index';
 
 export type ServeOptions = {
+    port: number,
     graphiql: boolean,
     rootValue: string,
     contextValue: string,
     mocks: string
 };
 
-export default function (schemaFileName: string, port: number, options: ServeOptions) {
+export default function (schemaFileName: string, options: ServeOptions) {
     const schemaText = readTextFile(schemaFileName);
     const mocks = requireAsObjectIfPresent(options.mocks);
     const rootValue = requireAsObjectIfPresent(options.rootValue);
@@ -40,7 +41,7 @@ export default function (schemaFileName: string, port: number, options: ServeOpt
 
     express()
         .use('/graphql', graphqlHTTP(graphqlHTTPConfig))
-        .listen(port, () => console.log(`Granate server listening on port: '${port}'.`));
+        .listen(options.port, () => console.log(`Granate server listening on port: '${options.port}'.`));
 }
 
 function requireAsObjectIfPresent(modulePath: string) {
