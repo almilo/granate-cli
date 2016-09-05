@@ -5,7 +5,7 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.should();
 chai.use(chaiAsPromised);
 
-export function execWithArguments(args: string): Promise<any> {
+export function execCommand(args: string): Promise<any> {
     return new Promise(resolve => {
         exec(
             `node dist/index.js ${args}`,
