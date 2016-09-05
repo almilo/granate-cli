@@ -17,21 +17,26 @@ export default function (yargs: Yargs): Yargs {
                     'default': 4000,
                     describe: 'the server port'
                 },
-                'graphiql': {
+                graphiql: {
                     alias: 'g',
                     type: 'boolean',
                     'default': true,
                     describe: 'deploy GraphiQL'
                 },
-                'root': {
+                root: {
                     alias: 'r',
                     type: 'string',
-                    describe: 'JS module to use as root value'
+                    describe: 'JS module to use as root value. Module must export an object.'
                 },
-                'context': {
+                context: {
                     alias: 'c',
                     type: 'string',
-                    describe: 'JS module to use as context value'
+                    describe: 'JS module to use as context value. Module must export an object.'
+                },
+                mocks: {
+                    alias: 'm',
+                    type: 'string',
+                    describe: 'JS module to use as custom mocks. Module must export an object.'
                 }
             },
             (argv: Argv) => serve(
@@ -40,7 +45,8 @@ export default function (yargs: Yargs): Yargs {
                 {
                     graphiql: argv['graphiql'],
                     rootValue: argv['root'],
-                    contextValue: argv['context']
+                    contextValue: argv['context'],
+                    mocks: argv['mocks']
                 }
             )
         );

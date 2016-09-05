@@ -69,4 +69,20 @@ describe('serve command', function () {
                 stdout.should.contain(`Using: 'test/context-value.js' as context value.`);
             });
     });
+
+    it('should start a server and use custom mocks --mocks option is used @slow', function () {
+        return execWithArguments('serve test/schema.graphql --mocks test/mocks.js')
+            .then(({stdout}) => {
+                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain(`Using: 'test/mocks.js' as custom mocks.`);
+            });
+    });
+
+    it('should start a server and use custom mocks -m option is used @slow', function () {
+        return execWithArguments('serve test/schema.graphql -m test/mocks.js')
+            .then(({stdout}) => {
+                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain(`Using: 'test/mocks.js' as custom mocks.`);
+            });
+    });
 });
