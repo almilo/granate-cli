@@ -18,44 +18,49 @@ describe('serve command', function () {
     });
 
     it('should start a server on port 4000 when the schema exists @slow', function () {
-        return execCommand('serve test/schema.graphql').then(({stdout}) => {
-            stdout.should.contain(`port: '4000'`);
-            stdout.should.not.contain('GraphiQL');
-        });
+        return execCommand('serve test/schema.graphql')
+            .then(({stdout}) => {
+                stdout.should.contain('4000');
+                stdout.should.not.contain('GraphiQL');
+            });
     });
 
     it('should start a server on another port when the --port option is used @slow', function () {
-        return execCommand('serve test/schema.graphql --port 5000') .then(({stdout}) => {
-            stdout.should.contain(`port: '5000'`);
-            stdout.should.not.contain('GraphiQL');
-        });
+        return execCommand('serve test/schema.graphql --port 5000')
+            .then(({stdout}) => {
+                stdout.should.contain('5000');
+                stdout.should.not.contain('GraphiQL');
+            });
     });
 
     it('should start a server on another port when the -p option is used @slow', function () {
-        return execCommand('serve test/schema.graphql -p 5000').then(({stdout}) => {
-            stdout.should.contain(`port: '5000'`);
-            stdout.should.not.contain('GraphiQL');
-        });
+        return execCommand('serve test/schema.graphql -p 5000')
+            .then(({stdout}) => {
+                stdout.should.contain('5000');
+                stdout.should.not.contain('GraphiQL');
+            });
     });
 
     it('should start a server and not deploy GraphiQL when the --graphiql option is false @slow', function () {
-        return execCommand('serve test/schema.graphql --graphiql false').then(({stdout}) => {
-            stdout.should.contain(`port: '4000'`);
-            stdout.should.contain('GraphiQL');
-        });
+        return execCommand('serve test/schema.graphql --graphiql false')
+            .then(({stdout}) => {
+                stdout.should.contain('4000');
+                stdout.should.contain('GraphiQL');
+            });
     });
 
     it('should start a server and not deploy GraphiQL when the -g option is false @slow', function () {
-        return execCommand('serve test/schema.graphql -g false').then(({stdout}) => {
-            stdout.should.contain(`port: '4000'`);
-            stdout.should.contain('GraphiQL');
-        });
+        return execCommand('serve test/schema.graphql -g false')
+            .then(({stdout}) => {
+                stdout.should.contain('4000');
+                stdout.should.contain('GraphiQL');
+            });
     });
 
     it('should start a server and use root value and context when --root and --context options are used @slow', function () {
         return execCommand('serve test/schema.graphql --root test/root-value.js --context test/context-value.js')
             .then(({stdout}) => {
-                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain('4000');
                 stdout.should.contain(`Using: 'test/root-value.js' as root value.`);
                 stdout.should.contain(`Using: 'test/context-value.js' as context value.`);
             });
@@ -64,25 +69,41 @@ describe('serve command', function () {
     it('should start a server and use root value and context when -r and -c options are used @slow', function () {
         return execCommand('serve test/schema.graphql -r test/root-value.js -c test/context-value.js')
             .then(({stdout}) => {
-                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain('4000');
                 stdout.should.contain(`Using: 'test/root-value.js' as root value.`);
                 stdout.should.contain(`Using: 'test/context-value.js' as context value.`);
             });
     });
 
-    it('should start a server and use custom mocks --mocks option is used @slow', function () {
+    it('should start a server and use custom mocks when --mocks option is used @slow', function () {
         return execCommand('serve test/schema.graphql --mocks test/mocks.js')
             .then(({stdout}) => {
-                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain('4000');
                 stdout.should.contain(`Using: 'test/mocks.js' as custom mocks.`);
             });
     });
 
-    it('should start a server and use custom mocks -m option is used @slow', function () {
+    it('should start a server and use custom mocks when -m option is used @slow', function () {
         return execCommand('serve test/schema.graphql -m test/mocks.js')
             .then(({stdout}) => {
-                stdout.should.contain(`port: '4000'`);
+                stdout.should.contain('4000');
                 stdout.should.contain(`Using: 'test/mocks.js' as custom mocks.`);
+            });
+    });
+
+    it('should start a server and use annotation factories when --annotations option is used with a module @slow', function () {
+        return execCommand('serve test/annotated-schema.graphql --annotations test/annotations.js')
+            .then(({stdout}) => {
+                stdout.should.contain('4000');
+                stdout.should.contain(`Using: 'test/annotations.js' as annotation factories.`);
+            });
+    });
+
+    it('should start a server and use annotation factories when -a option is used with a module @slow', function () {
+        return execCommand('serve test/annotated-schema.graphql -a test/annotations.js')
+            .then(({stdout}) => {
+                stdout.should.contain('4000');
+                stdout.should.contain(`Using: 'test/annotations.js' as annotation factories.`);
             });
     });
 });

@@ -1,0 +1,15 @@
+type Foo {
+    id: ID
+    title: String @mock(value: "statement")
+    completed: Boolean
+}
+
+type FooCard @mock(value: "card_data") {
+    type: String
+    number: String
+}
+
+type Query {
+    fooCards: [FooCard]
+    foos: [Foo]
+}

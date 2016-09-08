@@ -8,7 +8,8 @@ export type ServeOptions = {
     graphiql: boolean,
     rootValue: string,
     contextValue: string,
-    mocks: string
+    mocks: string,
+    annotationFactories: string
 };
 
 export default function (schemaFileName: string, options: ServeOptions) {
@@ -16,8 +17,9 @@ export default function (schemaFileName: string, options: ServeOptions) {
     const mocks = requireAsObjectIfPresent(options.mocks);
     const rootValue = requireAsObjectIfPresent(options.rootValue);
     const context = requireAsObjectIfPresent(options.contextValue);
+    const annotationFactories = requireAsObjectIfPresent(options.annotationFactories);
     const graphqlHTTPConfig = {
-        schema: buildSchema(schemaText, mocks),
+        schema: buildSchema(schemaText, mocks, annotationFactories),
         graphiql: options.graphiql,
         rootValue,
         context
@@ -39,9 +41,13 @@ export default function (schemaFileName: string, options: ServeOptions) {
         console.info(`Using: '${options.mocks}' as custom mocks.`);
     }
 
+    if (annotationFactories) {
+        console.info(`Using: '${options.annotationFactories}' as annotation factories.`);
+    }
+
     express()
         .use('/graphql', graphqlHTTP(graphqlHTTPConfig))
-        .listen(options.port, () => console.log(`Granate server listening on port: '${options.port}'.`));
+        .listen(options.port, () => console.log(`Granate server listening on: 'http://localhost:${options.port}/graphql'.`));
 }
 
 function requireAsObjectIfPresent(modulePath: string) {

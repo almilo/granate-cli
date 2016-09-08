@@ -37,6 +37,11 @@ export default function (yargs: Yargs): Yargs {
                     alias: 'm',
                     type: 'string',
                     describe: 'JS module to use as custom mocks. Module must export an object.'
+                },
+                annotations: {
+                    alias: 'a',
+                    type: 'string',
+                    describe: 'JS module to use as annotation factories. Module must export a list of annotation factories.'
                 }
             },
             (argv: Argv) => serve(
@@ -46,7 +51,8 @@ export default function (yargs: Yargs): Yargs {
                     graphiql: argv['graphiql'],
                     rootValue: argv['root'],
                     contextValue: argv['context'],
-                    mocks: argv['mocks']
+                    mocks: argv['mocks'],
+                    annotationFactories: argv['annotations']
                 }
             )
         );
