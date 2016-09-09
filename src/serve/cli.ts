@@ -41,7 +41,12 @@ export default function (yargs: Yargs): Yargs {
                 annotations: {
                     alias: 'a',
                     type: 'string',
-                    describe: 'JS module to use as annotation factories. Module must export a list of annotation factories.'
+                    describe: [
+                        'JS module to use as annotation factories.' +
+                        'Module must export a list of annotation factories.' +
+                        'Or comma-separated list of standard annotations.' +
+                        'If no value is passed, all the standard annotations are enabled.'
+                    ].join(' ')
                 }
             },
             (argv: Argv) => serve(

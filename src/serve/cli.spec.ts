@@ -91,11 +91,19 @@ describe('serve command', function () {
             });
     });
 
-    it('should start a server and use annotation factories when --annotations option is used with a module @slow', function () {
-        return execCommand('serve test/annotated-schema.graphql --annotations test/annotations.js')
+    it('should start a server and use annotation factories when --annotations option is used without a value @slow', function () {
+        return execCommand('serve test/annotated-schema.graphql --annotations')
             .then(({stdout}) => {
                 stdout.should.contain('4000');
-                stdout.should.contain(`Using: 'test/annotations.js' as annotation factories.`);
+                stdout.should.contain(`Annotations: 'mock' enabled.`);
+            });
+    });
+
+    it('should start a server and use selected annotation factories when -a option is used with a name @slow', function () {
+        return execCommand('serve test/annotated-schema.graphql -a mock')
+            .then(({stdout}) => {
+                stdout.should.contain('4000');
+                stdout.should.contain(`Annotations: 'mock' enabled.`);
             });
     });
 
@@ -103,7 +111,7 @@ describe('serve command', function () {
         return execCommand('serve test/annotated-schema.graphql -a test/annotations.js')
             .then(({stdout}) => {
                 stdout.should.contain('4000');
-                stdout.should.contain(`Using: 'test/annotations.js' as annotation factories.`);
+                stdout.should.contain(`Annotations: 'my-mock' enabled.`);
             });
     });
 });

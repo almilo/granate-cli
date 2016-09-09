@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as graphqlHTTP from 'express-graphql';
-import { buildSchema } from 'granate';
+import { buildSchema, AnnotationFactory, standardAnnotationFactories } from 'granate';
 import { readTextFile, requireRelative } from '../lib/index';
 
 export type ServeOptions = {
@@ -17,7 +17,7 @@ export default function (schemaFileName: string, options: ServeOptions) {
     const mocks = requireAsObjectIfPresent(options.mocks);
     const rootValue = requireAsObjectIfPresent(options.rootValue);
     const context = requireAsObjectIfPresent(options.contextValue);
-    const annotationFactories = requireAsObjectIfPresent(options.annotationFactories);
+    const annotationFactories = processAnnotationFactories(options.annotationFactories);
     const graphqlHTTPConfig = {
         schema: buildSchema(schemaText, mocks, annotationFactories),
         graphiql: options.graphiql,
@@ -42,12 +42,38 @@ export default function (schemaFileName: string, options: ServeOptions) {
     }
 
     if (annotationFactories) {
-        console.info(`Using: '${options.annotationFactories}' as annotation factories.`);
+        console.info(`Annotations: '${getAnnotationNames(annotationFactories)}' enabled.`);
     }
 
     express()
         .use('/graphql', graphqlHTTP(graphqlHTTPConfig))
         .listen(options.port, () => console.log(`Granate server listening on: 'http://localhost:${options.port}/graphql'.`));
+}
+
+function getAnnotationNames(annotationFactories: Array<AnnotationFactory>): String {
+    return annotationFactories
+        .map(annotationFactory => annotationFactory.TAG)
+        .join(',');
+}
+
+function processAnnotationFactories(annotationFactoriesNames: string): Array<AnnotationFactory> {
+    if (annotationFactoriesNames === '') {
+        return standardAnnotationFactories;
+    }
+
+    const selectedAnnotationFactories = selectAnnotationFactories(standardAnnotationFactories, annotationFactoriesNames);
+
+    if (selectedAnnotationFactories.length > 0) {
+        return selectedAnnotationFactories;
+    } else {
+        return requireAsObjectIfPresent(annotationFactoriesNames);
+    }
+}
+
+function selectAnnotationFactories(annotationFactories: Array<AnnotationFactory>, names: String): Array<AnnotationFactory> {
+    const selectedNames = (names && names.split(',')) || [];
+
+    return annotationFactories.filter(annotationFactory => selectedNames.indexOf(annotationFactory.TAG) !== -1);
 }
 
 function requireAsObjectIfPresent(modulePath: string) {

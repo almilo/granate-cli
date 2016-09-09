@@ -14,7 +14,7 @@ function mockAnnotationFactory(directiveInfo, typeName, fieldName) {
     };
 }
 
-mockAnnotationFactory.TAG = 'mock';
+mockAnnotationFactory.TAG = 'my-mock';
 
 function createFieldMock(fieldName, value) {
     return function () {
