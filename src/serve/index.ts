@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as graphqlHTTP from 'express-graphql';
-import { buildSchema, AnnotationFactory, standardAnnotationFactories } from 'granate';
+import { buildSchemaAndContext, AnnotationFactory, standardAnnotationFactories } from 'granate';
 import { readTextFile, requireRelative } from '../lib/index';
 
 export type ServeOptions = {
@@ -14,16 +14,20 @@ export type ServeOptions = {
 
 export default function (schemaFileName: string, options: ServeOptions) {
     const schemaText = readTextFile(schemaFileName);
-    const mocks = requireAsObjectIfPresent(options.mocks);
-    const rootValue = requireAsObjectIfPresent(options.rootValue);
-    const context = requireAsObjectIfPresent(options.contextValue);
+    const sourceMocks = requireAsObjectIfPresent(options.mocks);
+    const sourceRootValue = requireAsObjectIfPresent(options.rootValue);
+    const sourceContextValue = requireAsObjectIfPresent(options.contextValue);
     const annotationFactories = processAnnotationFactories(options.annotationFactories);
-    const graphqlHTTPConfig = {
-        schema: buildSchema(schemaText, mocks, annotationFactories),
-        graphiql: options.graphiql,
-        rootValue,
-        context
-    };
+    const {schema, rootValue, contextValue}  = buildSchemaAndContext(
+        schemaText,
+        {
+            mocks: sourceMocks,
+            rootValue: sourceRootValue,
+            contextValue: sourceContextValue,
+            annotationFactories
+        }
+    );
+    const graphqlHTTPConfig = {schema, rootValue, context: contextValue, graphiql: options.graphiql};
 
     if (!graphqlHTTPConfig.graphiql) {
         console.info('GraphiQL will not be deployed.');
@@ -33,11 +37,11 @@ export default function (schemaFileName: string, options: ServeOptions) {
         console.info(`Using: '${options.rootValue}' as root value.`);
     }
 
-    if (context) {
+    if (contextValue) {
         console.info(`Using: '${options.contextValue}' as context value.`);
     }
 
-    if (mocks) {
+    if (sourceMocks) {
         console.info(`Using: '${options.mocks}' as custom mocks.`);
     }
 
