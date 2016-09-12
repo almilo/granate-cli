@@ -16,7 +16,7 @@
     "test:ci": "npm run test:only -- --grep @slow --invert",
     "dev": "npm run compile -- --watch | npm run test:only -- --watch",
     "build": "rimraf dist && npm test",
-    "prepublish": "npm build",
+    "prepublish": "npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "author": "Alberto Mijares <almilo@almilo.es>",
