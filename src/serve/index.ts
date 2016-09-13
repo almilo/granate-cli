@@ -33,15 +33,15 @@ export default function (schemaFileName: string, options: ServeOptions) {
         console.info('GraphiQL will not be deployed.');
     }
 
-    if (rootValue) {
+    if (options.rootValue) {
         console.info(`Using: '${options.rootValue}' as root value.`);
     }
 
-    if (contextValue) {
+    if (options.contextValue) {
         console.info(`Using: '${options.contextValue}' as context value.`);
     }
 
-    if (sourceMocks) {
+    if (options.mocks) {
         console.info(`Using: '${options.mocks}' as custom mocks.`);
     }
 
