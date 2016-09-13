@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as cors from 'cors';
 import * as graphqlHTTP from 'express-graphql';
 import { buildSchemaAndContext, AnnotationFactory, standardAnnotationFactories } from 'granate';
 import { readTextFile, requireRelative } from '../lib/index';
@@ -50,6 +51,7 @@ export default function (schemaFileName: string, options: ServeOptions) {
     }
 
     express()
+        .use(cors())
         .use('/graphql', graphqlHTTP(graphqlHTTPConfig))
         .listen(options.port, () => console.log(`Granate server listening on: 'http://localhost:${options.port}/graphql'.`));
 }
