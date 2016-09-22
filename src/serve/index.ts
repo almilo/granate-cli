@@ -19,18 +19,8 @@ export default function (schemaFileName: string, options: ServeOptions) {
     const sourceRootValue = requireAsObjectIfPresent(options.rootValue);
     const sourceContextValue = requireAsObjectIfPresent(options.contextValue);
     const annotationFactories = processAnnotationFactories(options.annotationFactories);
-    const {schema, rootValue, contextValue}  = buildSchemaAndContext(
-        schemaText,
-        {
-            mocks: sourceMocks,
-            rootValue: sourceRootValue,
-            contextValue: sourceContextValue,
-            annotationFactories
-        }
-    );
-    const graphqlHTTPConfig = {schema, rootValue, context: contextValue, graphiql: options.graphiql};
 
-    if (!graphqlHTTPConfig.graphiql) {
+    if (!options.graphiql) {
         console.info('GraphiQL will not be deployed.');
     }
 
@@ -52,8 +42,22 @@ export default function (schemaFileName: string, options: ServeOptions) {
 
     express()
         .use(cors())
-        .use('/graphql', graphqlHTTP(graphqlHTTPConfig))
+        .use('/graphql', graphqlHTTP(graphqlHTTPConfigFactory))
         .listen(options.port, () => console.log(`Granate server listening on: 'http://localhost:${options.port}/graphql'.`));
+
+    function graphqlHTTPConfigFactory() {
+        const {schema, rootValue, contextValue} = buildSchemaAndContext(
+            schemaText,
+            {
+                mocks: sourceMocks,
+                rootValue: sourceRootValue,
+                contextValue: sourceContextValue,
+                annotationFactories
+            }
+        );
+
+        return {schema, rootValue, context: contextValue, graphiql: options.graphiql};
+    }
 }
 
 function getAnnotationNames(annotationFactories: Array<AnnotationFactory>): String {
