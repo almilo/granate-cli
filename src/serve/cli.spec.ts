@@ -91,11 +91,11 @@ describe('serve command', function () {
             });
     });
 
-    it('should start a server and use annotation factories when --annotations option is used without a value @slow', function () {
+    it('should start a server and use all standard annotation factories when --annotations option is used without a value @slow', function () {
         return execCommand('serve test/annotated-schema.graphql --annotations')
             .then(({stdout}) => {
                 stdout.should.contain('4000');
-                stdout.should.contain(`Annotations: 'mock' enabled.`);
+                stdout.should.contain(`Annotations: 'mock,rest' enabled.`);
             });
     });
 
