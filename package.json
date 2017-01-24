@@ -35,7 +35,7 @@
   "dependencies": {
     "cors": "^2.8.1",
     "express": "^4.14.0",
-    "express-graphql": "^0.5.4",
+    "express-graphql": "^0.6.2",
     "granate": "^1.0.0",
     "graphql": "^0.7.0",
     "yargs": "^5.0.0"
